@@ -18,7 +18,7 @@ RUN groupadd $USER_DEV && \
 # Install Dependencies
 # utils like wget, which
 # Development Tools, libarchive-devel needed to build Singularity
-# squashfs-tools for singularity to build their images
+# squashfs-tools for singularity to build their images when pull image from docker:// hub
 # java-* needed for Nextflow
 RUN yum -y update && \
   yum -y groupinstall "Development Tools" && \
