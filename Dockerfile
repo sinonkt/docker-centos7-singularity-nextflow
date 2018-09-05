@@ -18,6 +18,7 @@ RUN groupadd $USER_DEV && \
 # Install Dependencies
 # utils like wget, which
 # Development Tools, libarchive-devel needed to build Singularity
+# squashfs-tools for singularity to build their images
 # java-* needed for Nextflow
 RUN yum -y update && \
   yum -y groupinstall "Development Tools" && \
@@ -28,6 +29,7 @@ RUN yum -y update && \
   java-1.8.0-openjdk-devel \
   java-1.8.0-openjdk \
   libarchive-devel \
+  squashfs-tools \
   && \
   yum clean all && \
   rm -rf /var/cache/yum/*
