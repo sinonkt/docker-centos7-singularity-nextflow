@@ -58,5 +58,3 @@ RUN mv ${HOME}/nextflow ${APP_HOME}/bin && \
 WORKDIR $DEV_HOME
 
 VOLUME [ "/sys/fs/cgroup", "${DEV_HOME}" ]
-
-CMD ["/usr/bin/supervisord", "--nodaemon"]
