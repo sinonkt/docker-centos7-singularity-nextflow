@@ -19,7 +19,7 @@ RUN groupadd $USER_DEV && \
 # utils like wget, which
 # Development Tools, libarchive-devel needed to build Singularity
 # squashfs-tools for singularity to build their images when pull image from docker:// hub
-# java-* needed for Nextflow
+# java-* graphviz needed for Nextflow
 RUN yum -y update && \
   yum -y groupinstall "Development Tools" && \
   yum -y install \
@@ -30,6 +30,7 @@ RUN yum -y update && \
   java-1.8.0-openjdk \
   libarchive-devel \
   squashfs-tools \
+  graphviz \
   && \
   yum clean all && \
   rm -rf /var/cache/yum/*
