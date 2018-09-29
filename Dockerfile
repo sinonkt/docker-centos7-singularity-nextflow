@@ -24,7 +24,7 @@ RUN groupadd $USER_DEV && \
 # utils like wget, which
 # Development Tools, libarchive-devel needed to build Singularity
 # squashfs-tools for singularity to build their images when pull image from docker:// hub
-# gpgme-devel, uuid-dev, libssl-dev, openssl-devel needed build/compiling singularity 
+# gpgme-devel, libuuid-devel, libssl-dev, openssl-devel needed build/compiling singularity 
 # java-* graphviz needed for Nextflow
 RUN yum -y update && \
   yum -y groupinstall "Development Tools" && \
@@ -37,7 +37,7 @@ RUN yum -y update && \
   libarchive-devel \
   libssl-dev \
   openssl-devel \
-  uuid-dev \
+  libuuid-devel \
   gpgme-devel \
   squashfs-tools \
   graphviz \
