@@ -37,7 +37,7 @@ RUN yum -y update && \
 
 
 # Install Singularity
-RUN wget https://github.com/sylabs/singularity/archive/${SINGULARITY_VERSION}.tar.gz
+RUN wget https://github.com/sylabs/singularity/archive/${SINGULARITY_VERSION}.tar.gz && \
   tar -zxvf ${SINGULARITY_VERSION}.tar.gz && \
   cd singularity-${SINGULARITY_VERSION}.tar.gz && \
   ./autogen.sh && \
