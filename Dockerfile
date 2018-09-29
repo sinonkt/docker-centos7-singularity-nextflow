@@ -40,7 +40,6 @@ RUN yum -y update && \
 RUN wget https://github.com/sylabs/singularity/archive/v${SINGULARITY_VERSION}.tar.gz && \
   tar -zxvf v${SINGULARITY_VERSION}.tar.gz && \
   cd singularity-${SINGULARITY_VERSION} && \
-  ./autogen.sh && \
   ./configure --prefix=$APP_HOME --sysconfdir=/etc && \
   make && make install && \
   cd .. && \
