@@ -2,7 +2,7 @@ FROM centos/systemd:latest
 
 LABEL maintainer="oatkrittin@gmail.com"
 
-ENV SINGULARITY_VERSION=v3.0.0-beta.1
+ENV SINGULARITY_VERSION=2.6.0
 ENV APP_HOME=/usr/local
 ENV PATH=${APP_HOME}/bin:$PATH
 
