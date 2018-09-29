@@ -2,7 +2,7 @@ FROM centos/systemd:latest
 
 LABEL maintainer="oatkrittin@gmail.com"
 
-ENV SINGULARITY_VERSION=v3.0.0-beta.1
+ENV SINGULARITY_VERSION=3.0.0-beta.1
 ENV APP_HOME=/usr/local
 ENV PATH=${APP_HOME}/bin:$PATH
 
@@ -37,14 +37,14 @@ RUN yum -y update && \
 
 
 # Install Singularity
-RUN wget https://github.com/sylabs/singularity/archive/${SINGULARITY_VERSION}.tar.gz && \
-  tar -zxvf ${SINGULARITY_VERSION}.tar.gz && \
+RUN wget https://github.com/sylabs/singularity/archive/v${SINGULARITY_VERSION}.tar.gz && \
+  tar -zxvf v${SINGULARITY_VERSION}.tar.gz && \
   cd singularity-${SINGULARITY_VERSION} && \
   ./autogen.sh && \
   ./configure --prefix=$APP_HOME --sysconfdir=/etc && \
   make && make install && \
   cd .. && \
-  rm -f ${SINGULARITY_VERSION}.tar.gz
+  rm -f v${SINGULARITY_VERSION}.tar.gz
 
 # Install Nextflow binary under uer dev and Configure Dir for dev
 USER $USER_DEV
