@@ -2,13 +2,18 @@ FROM centos/systemd:latest
 
 LABEL maintainer="oatkrittin@gmail.com"
 
-ENV SINGULARITY_VERSION=3.0.0-beta.1
-ENV APP_HOME=/usr/local
-ENV PATH=${APP_HOME}/bin:$PATH
-
 # Main User to user while development
 ENV USER_DEV=dev
 ENV HOME=/home/$USER_DEV
+ENV GOPATH=${HOME}/go
+
+ENV SINGULARITY_VERSION=3.0.0-beta.1 \
+  GO_VERSION=1.11 \
+  OS=linux \
+  ARCH=amd64
+ENV APP_HOME=/usr/local
+ENV PATH=/usr/local/go/bin:${APP_HOME}/bin:${GOPATH}/bin:$PATH
+
 # Mount Your Code to this DEV_HOME via docker volume
 ENV DEV_HOME=${HOME}/Code
 
@@ -19,6 +24,7 @@ RUN groupadd $USER_DEV && \
 # utils like wget, which
 # Development Tools, libarchive-devel needed to build Singularity
 # squashfs-tools for singularity to build their images when pull image from docker:// hub
+# gpgme-devel, uuid-dev, libssl-dev, openssl-devel needed build/compiling singularity 
 # java-* graphviz needed for Nextflow
 RUN yum -y update && \
   yum -y groupinstall "Development Tools" && \
@@ -29,21 +35,31 @@ RUN yum -y update && \
   java-1.8.0-openjdk-devel \
   java-1.8.0-openjdk \
   libarchive-devel \
+  libssl-dev \
+  openssl-devel \
+  uuid-dev \
+  gpgme-devel \
   squashfs-tools \
   graphviz \
   && \
   yum clean all && \
   rm -rf /var/cache/yum/*
 
+# Install Golang
+RUN cd /tmp && \
+  wget https://dl.google.com/go/go$GO_VERSION.$OS-$ARCH.tar.gz && \
+  tar -C /usr/local -xzf go$GO_VERSION.$OS-$ARCH.tar.gz && \
+  rm -f go$GO_VERSION.$OS-$ARCH.tar.gz
 
 # Install Singularity
-RUN wget https://github.com/sylabs/singularity/archive/v${SINGULARITY_VERSION}.tar.gz && \
-  tar -zxvf v${SINGULARITY_VERSION}.tar.gz && \
-  cd singularity-${SINGULARITY_VERSION} && \
-  ./configure --prefix=$APP_HOME --sysconfdir=/etc && \
-  make && make install && \
-  cd .. && \
-  rm -f v${SINGULARITY_VERSION}.tar.gz
+RUN mkdir -p $GOPATH/src/github.com/sylabs && \
+  cd $GOPATH/src/github.com/sylabs && \
+  git clone https://github.com/sylabs/singularity.git && \
+  cd singularity && \
+  go get -u -v github.com/golang/dep/cmd/dep && \
+  ./mconfig && \
+  cd ./builddir && \
+  make && make install
 
 # Install Nextflow binary under uer dev and Configure Dir for dev
 USER $USER_DEV
