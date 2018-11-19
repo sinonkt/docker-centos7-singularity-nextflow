@@ -74,16 +74,21 @@ USER dev
 WORKDIR /home/dev
 RUN wget -qO- https://get.nextflow.io | bash
 
-# Install AWS cli
-RUN pip install awscli --upgrade --user
+# Install S3 cli like AWS, Minio Client(MC)
+RUN pip install awscli --upgrade --user && \
+    wget https://dl.minio.io/client/mc/release/linux-amd64/mc && \
+    chmod u+x mc 
 
 VOLUME [ "/home/dev/data", "home/dev/code" ]
 
 USER root
 
-# Make nextflow globally available via softlink
-RUN ln -s /home/dev/nextflow /usr/bin/nextflow
+# Make nextflow globally available via softlink, trigger nextflow to load deps
+RUN ln -s /home/dev/nextflow /usr/bin/nextflow && \
+    ln -s /home/dev/mc  /usr/bin/mc && \
+    nextflow -v
 
 EXPOSE 22
+
 
 CMD ["/usr/sbin/init"]
