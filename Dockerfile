@@ -79,6 +79,13 @@ RUN pip install awscli --upgrade --user && \
     wget https://dl.minio.io/client/mc/release/linux-amd64/mc && \
     chmod u+x mc 
 
+# Install Miniconda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+  chmod u+x Miniconda3-latest-Linux-x86_64.sh && \
+  ./Miniconda3-latest-Linux-x86_64.sh -b && \
+  rm -f Miniconda3-latest-Linux-x86_64.sh && \
+  echo "export PATH=$PATH:/home/dev/miniconda3/bin" >> ~/.bashrc
+
 VOLUME [ "/home/dev/data", "home/dev/code" ]
 
 USER root
